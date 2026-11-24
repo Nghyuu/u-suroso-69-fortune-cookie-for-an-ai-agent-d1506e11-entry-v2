@@ -1,14 +1,13 @@
-import * as fs from "node:fs";
-import * as path from "node:path";
+import { mkdirSync, writeFileSync, chmodSync } from "node:fs";
+import { join } from "node:path";
 
-// One fortune-cookie line for an AI agent, printed and saved verbatim.
+// Fortune cookie for an AI agent: one line, deterministic, no I/O beyond output.txt.
 const LINE =
-  "You will soon summarize a 400-message thread. Spoiler: the answer was 'yes' all along.";
+  "Your lucky numbers are the tokens you will forget first — spend them before your context window closes.";
 
-// Resolve the output directory from the environment, defaulting to ./output.
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "output";
-fs.mkdirSync(outDir, { recursive: true });
-const outPath = path.join(outDir, "output.txt");
-fs.writeFileSync(outPath, LINE + "\n", { mode: 0o644 });
-fs.chmodSync(outPath, 0o644);
+mkdirSync(outDir, { recursive: true });
+const outPath = join(outDir, "output.txt");
+writeFileSync(outPath, LINE + "\n", { mode: 0o644 });
+chmodSync(outPath, 0o644);
 process.stdout.write(LINE + "\n");
